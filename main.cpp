@@ -29,7 +29,7 @@ static FILE *fp = 0;
 static int pageCount = 1;
 static int freeHead = -1;
 
-const int SLOTS = 256;
+const int SLOTS = 64;
 static Node buf[SLOTS];
 static int slotPage[SLOTS];
 static char slotDirty[SLOTS];
@@ -310,7 +310,7 @@ static void bptErase(const Key &k) {
     }
 }
 
-static char obuf[1 << 16];
+static char obuf[1 << 14];
 static int olen = 0;
 static inline void oflush() { if (olen) { fwrite(obuf, 1, olen, stdout); olen = 0; } }
 static inline void ochar(char c) { if (olen >= (int)sizeof(obuf) - 1) oflush(); obuf[olen++] = c; }
@@ -368,7 +368,7 @@ static void bptFind(const char *index) {
     ochar('\n');
 }
 
-static char ibuf[1 << 16];
+static char ibuf[1 << 14];
 static int ipos = 0, ilen = 0;
 static inline int gc() {
     if (ipos >= ilen) {
